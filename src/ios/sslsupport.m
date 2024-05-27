@@ -89,6 +89,7 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         NSLog(@"%@", @"JSON BODY POST");
     }
+    [manager.requestSerializer setTimeoutInterval:LONG_MAX];
     
     if(UserAgent != nil) {
         [manager.requestSerializer setValue:UserAgent forHTTPHeaderField:@"User-Agent"];
@@ -470,7 +471,7 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (NSURLSessionDataTask *)sendRequest:(AFHTTPSessionManager *)manager (NSString *)method url:(NSString *)url parameters:(NSDictionary *)parameters success:(void (^)(NSURLSessionTask *operation, id responseObject))success failure:(void (^)(NSURLSessionTask *operation, NSError *error))failure {
+- (NSURLSessionDataTask *)sendRequest:(AFHTTPSessionManager *)manager method:(NSString *)method url:(NSString *)url parameters:(NSDictionary *)parameters success:(void (^)(NSURLSessionTask *operation, id responseObject))success failure:(void (^)(NSURLSessionTask *operation, NSError *error))failure {
 
     NSURLSessionDataTask *task;
 
@@ -572,14 +573,14 @@
 }
 
 - (void)post:(CDVInvokedUrlCommand*)command {
-    [send command:command method:@"POST"];
+    [self send:command method:@"POST"];
 }
 
 - (void)put:(CDVInvokedUrlCommand*)command {
-    [send command:command method:@"PUT"];
+    [self send:command method:@"PUT"];
 }
 - (void)delete:(CDVInvokedUrlCommand*)command {
-    [send command:command method:@"DELETE"];
+    [self send:command method:@"DELETE"];
 }
 
 
