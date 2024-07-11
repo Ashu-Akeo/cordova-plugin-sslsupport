@@ -21,8 +21,8 @@
         </config-file>
         
         <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
-        <framework src="com.squareup.okhttp3:okhttp:4.12.0" />
-        <framework src="com.squareup.okhttp3:okhttp-urlconnection:4.12.0" />
+        <framework src="com.squareup.okhttp3:okhttp:4.11.0" />
+        <framework src="com.squareup.okhttp3:okhttp-urlconnection:4.11.0" />
         <framework src="androidx.annotation:annotation:1.5.0" />
         
         <source-file src="src/android/CordovaPluginSslSupport.java" target-dir="src/com/sslsupport/plugin" />
