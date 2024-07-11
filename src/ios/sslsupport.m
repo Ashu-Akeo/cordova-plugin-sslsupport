@@ -461,6 +461,7 @@
             [cookieProperties setObject:cookie.domain forKey:[NSHTTPCookieDomain lowercaseString]];
             [cookieProperties setObject:cookie.path forKey:[NSHTTPCookiePath lowercaseString]];
             [cookieProperties setObject:[NSNumber numberWithLong:cookie.version] forKey:[NSHTTPCookieVersion lowercaseString]];
+            [cookieProperties setObject:[NSNumber numberWithLong:cookie.expiresDate.timeIntervalSince1970] forKey:[NSHTTPCookieExpires lowercaseString]];
             [responseCookies setObject:cookieProperties forKey:cookie.name];
         }
     }
