@@ -344,7 +344,8 @@ public class CordovaPluginSslSupport extends CordovaPlugin {
                     jsonCookie.put("value", cookie.value());
                     jsonCookie.put("domain", cookie.domain());
                     jsonCookie.put("path", cookie.path());
-                    jsonCookie.put("expires", cookie.expiresAt());
+                    // dividing with 100 to convert it into timeInSeconds
+                    jsonCookie.put("expires", cookie.expiresAt() > 0 ? cookie.expiresAt() / 1000 : 0);
 
                     jsonCookies.put(cookie.name(), jsonCookie);
                 }
