@@ -188,9 +188,9 @@ public class CordovaPluginSslSupport extends CordovaPlugin {
 
         try {
             return new OkHttpClient.Builder()
-                    .connectTimeout(0, TimeUnit.SECONDS)
-                    .writeTimeout(0, TimeUnit.SECONDS)
-                    .readTimeout(0, TimeUnit.SECONDS)
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
                     .build();
         } catch (Exception e) {
             // do something
@@ -238,6 +238,15 @@ public class CordovaPluginSslSupport extends CordovaPlugin {
                 this.getCookies(args, callbackContext);
 
             } catch (Exception e) {
+                callbackContext.error(e.getMessage());
+                return false;
+            }
+            return true;
+        } else if(action.equals("setRequestTimeout")) {
+            try{
+                this.setRequestTimeout(args, callbackContext);
+            } catch (Exception e)
+            {
                 callbackContext.error(e.getMessage());
                 return false;
             }
@@ -357,6 +366,31 @@ public class CordovaPluginSslSupport extends CordovaPlugin {
             callbackContext.error(je.getMessage());
         }
 
+    }
+
+    //########### Set request max timeout
+    private void setRequestTimeout(JSONArray args, CallbackContext callbackContext) throws JSONException {
+        int connect = args.getInt(0);
+        int write = args.getInt(1);
+        int read = args.getInt(2);
+
+        try {
+            client = client.newBuilder()
+                    .connectTimeout(connect, TimeUnit.SECONDS)
+                    .writeTimeout(write, TimeUnit.SECONDS)
+                    .readTimeout(read, TimeUnit.SECONDS)
+                    .build();
+            httpclient = httpclient.newBuilder()
+                    .connectTimeout(connect, TimeUnit.SECONDS)
+                    .writeTimeout(write, TimeUnit.SECONDS)
+                    .readTimeout(read, TimeUnit.SECONDS)
+                    .build();
+
+            callbackContext.success("Request timeout set successfully!");
+        } catch (Exception e) {
+            Log.e("SSLSetRequestTimeoutError", e.getMessage());
+            callbackContext.error(e.getMessage());
+        }
     }
 
     // ###################################################### Helper function

@@ -149,6 +149,17 @@ var http = {
 		var domain = typeof params == "string" ? params || "all" : "all";
 		return exec(success, failure, "CordovaPluginSslSupport", "getCookies", [domain]);
 	},
+    setRequestTimeout: function (params, success, failure) {
+        var connect = 10;
+        var write = 10;
+        var read = 30;
+
+        if (params.hasOwnProperty("connect")) { connect = params.connect || 10; }
+        if (params.hasOwnProperty("write")) { write = params.write || 10 }
+        if (params.hasOwnProperty("read")) { read = params.read || 30 }
+
+        return exec(success, failure, "CordovaPluginSslSupport", "setRequestTimeout", [connect, write, read]);
+    },
 	post: function (params, success, failure) {
 		var options = validatePostRequest(params, failure);
 		if (!options) return;

@@ -19,6 +19,8 @@
     
     BOOL pinning;
     
+    long connectTimeout;
+    
     NSMutableArray *pinnedDomains;
 }
 
@@ -89,7 +91,7 @@
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         NSLog(@"%@", @"JSON BODY POST");
     }
-    [manager.requestSerializer setTimeoutInterval:LONG_MAX];
+    [manager.requestSerializer setTimeoutInterval:connectTimeout];
     
     if(UserAgent != nil) {
         [manager.requestSerializer setValue:UserAgent forHTTPHeaderField:@"User-Agent"];
@@ -469,6 +471,14 @@
     NSLog(@"%@", responseCookies);
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:responseCookies];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)setRequestTimeout:(CDVInvokedUrlCommand*)command {
+    int timeout = [[command.arguments objectAtIndex:0] intValue];
+    connectTimeout = timeout > 0 ? timeout : LONG_MAX;
+    
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: @"Request timeout set successfully!"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
